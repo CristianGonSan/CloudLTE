@@ -1,0 +1,44 @@
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-img-top {
+    width: 100%;
+    border-top-left-radius: calc(0.25rem - 1px);
+    border-top-right-radius: calc(0.25rem - 1px);
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    filter: grayscale(20%);
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.custom-toast-position {
+    top: 59px !important;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+body.dark-mode .form-control:-webkit-autofill,
+body.dark-mode .form-control:-webkit-autofill:hover,
+body.dark-mode .form-control:-webkit-autofill:focus,
+body.dark-mode .form-control:-webkit-autofill:active {
+    -webkit-text-fill-color: #fff;
+    -webkit-box-shadow: 0 0 0 1000px #3e444a inset;
+
+    transition: background-color 5000s ease-in-out 0s;
+}
