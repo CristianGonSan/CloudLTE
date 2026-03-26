@@ -25,6 +25,10 @@
     cursor: pointer;
 }
 
+.th-hover:hover {
+    background-color: rgba(0, 0, 0, 0.075) !important;
+}
+
 .custom-toast-position {
     top: 59px !important;
 }

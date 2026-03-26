@@ -8,7 +8,7 @@
                 $style = $col['style'] ?? '';
             @endphp
 
-            <th scope="col" class="text-{{ $align }} {{ $column ? 'cursor-pointer' : '' }}"
+            <th scope="col" class="text-{{ $align }} {{ $column ? 'cursor-pointer th-hover' : '' }}"
                 style="{{ $style }}"
                 @if ($column) wire:click="toggleSortDirection('{{ $column }}')" @endif>
                 {{ $label }}
