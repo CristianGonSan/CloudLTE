@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('document_signatories', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignId('document_id')->constrained('documents')->restrictOnDelete();
             $table->foreignId('user_id')->constrained('users')->restrictOnDelete();
-            $table->foreignId('category_id')->constrained('document_categories')->restrictOnDelete();
 
             $table->string('status', 32)->index()->default('pending');
             $table->dateTime('updated_status_at')->nullable();
-
-            $table->text('notes')->nullable();
 
             $table->timestamps();
         });
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('document_signatories');
     }
 };
