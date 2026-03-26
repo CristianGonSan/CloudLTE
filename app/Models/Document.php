@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property int $id
@@ -21,7 +22,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DocumentActivity> $activities
  * @property-read int|null $activities_count
  * @property-read \App\Models\DocumentCategory $category
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
  * @property-read int|null $media_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DocumentSignatory> $signatories
  * @property-read int|null $signatories_count
@@ -51,13 +52,10 @@ class Document extends Model implements HasMedia
         'notes',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'status'            => DocumentStatus::class,
-            'updated_status_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'status'            => DocumentStatus::class,
+        'updated_status_at' => 'datetime',
+    ];
 
     public function user(): BelongsTo
     {
@@ -77,5 +75,21 @@ class Document extends Model implements HasMedia
     public function activities(): HasMany
     {
         return $this->hasMany(DocumentActivity::class);
+    }
+
+    public function getFileUrl(): ?string
+    {
+        return '';
+    }
+
+    public function getFile(): ?Media
+    {
+        return $this->getFirstMedia('file');
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('file')
+            ->singleFile();
     }
 }

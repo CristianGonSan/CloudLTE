@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Traits\Models\HasActiveState;
 use App\Traits\Models\TruncateText;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -23,6 +24,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read int|null $documents_count
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
  * @property-read int|null $media_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
@@ -74,12 +77,12 @@ class User extends Authenticatable implements HasMedia
 
     public function isInUse(): bool
     {
-        return false;
+        return $this->documents()->exists();
     }
 
-    public function documents()
+    public function documents(): HasMany
     {
-        $this->hasMany(Document::class, 'owner_id');
+        return $this->hasMany(Document::class, 'user_id');
     }
 
     public function registerMediaCollections(): void

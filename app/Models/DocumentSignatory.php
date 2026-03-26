@@ -37,13 +37,10 @@ class DocumentSignatory extends Model
         'updated_status_at',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'status'            => SignatoryStatus::class,
-            'updated_status_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'status'            => SignatoryStatus::class,
+        'updated_status_at' => 'datetime',
+    ];
 
     public function document(): BelongsTo
     {

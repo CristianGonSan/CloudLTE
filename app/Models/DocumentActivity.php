@@ -37,13 +37,10 @@ class DocumentActivity extends Model
         'details',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'type'    => ActivityType::class,
-            'details' => 'array',
-        ];
-    }
+    protected $casts = [
+        'type'    => ActivityType::class,
+        'details' => 'array',
+    ];
 
     public function document(): BelongsTo
     {
