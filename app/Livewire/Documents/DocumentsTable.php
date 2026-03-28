@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Livewire\Documents\Categories;
+namespace App\Livewire\Documents;
 
+use App\Models\Document;
 use App\Models\DocumentCategory;
 use App\Traits\Livewire\Tables\HasLivewireTableBehavior;
 use Illuminate\Contracts\View\View;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Session;
 use Livewire\Component;
 
-class CategoriesTable extends Component
+class DocumentsTable extends Component
 {
     use HasLivewireTableBehavior;
 
@@ -34,12 +35,6 @@ class CategoriesTable extends Component
             'label'  => 'Nombre',
         ],
         [
-            'column' => 'is_active',
-            'label'  => 'Activo',
-            'align'  => 'center',
-            'style'  => 'width: 1%;',
-        ],
-        [
             'label' => 'Ver más',
             'align' => 'center',
         ],
@@ -52,16 +47,16 @@ class CategoriesTable extends Component
 
     public function render(): View
     {
-        $categories = $this->getQuery()->paginate($this->perPage);
+        $documents = $this->getQuery()->paginate($this->perPage);
 
-        return view('livewire.documents.categories.categories-table', [
-            'categories' => $categories,
+        return view('livewire.documents.documents-table', [
+            'documents' => $documents,
         ]);
     }
 
     private function getQuery(): Builder
     {
-        $query = DocumentCategory::query();
+        $query = Document::with('media');
 
         if ($term = $this->searchTerm) {
             $query->where(function ($q) use ($term) {

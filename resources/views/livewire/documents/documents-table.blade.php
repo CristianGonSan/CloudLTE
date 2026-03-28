@@ -1,4 +1,4 @@
-<x-card-table :pagination="$categories">
+<x-card-table :pagination="$documents">
     <x-slot:header>
         <x-livewire.table.search-pane />
     </x-slot:header>
@@ -6,12 +6,14 @@
     {{ $this->thead() }}
 
     <tbody>
-        @forelse ($categories as $category)
-            <tr wire:key="category-{{ $category->id }}">
-                <td>{{ $category->mediumText('name') }}</td>
-                <td class="text-center"><i class="{{ $category->getActiveIconClass() }}"></i></td>
+        @forelse ($documents as $document)
+            @php
+                $file = $document->file();
+            @endphp
+            <tr wire:key="document-{{ $document->id }}">
+                <td>{{ $file->file_name }}</td>
                 <td class="text-center">
-                    <a href="{{ route('document-categories.show', $category->id) }}" class="d-block text-reset">
+                    <a href="{{ route('documents.show', $document->id) }}" class="d-block text-reset">
                         <i class="fas fa-fw fa-chevron-right"></i>
                     </a>
                 </td>

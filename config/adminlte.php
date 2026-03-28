@@ -317,17 +317,21 @@ return [
             'route' => 'dashboard',
             'icon' => 'fas fa-fw fa-chart-line',
         ],
+        [
+            'text' => 'documents',
+            'route' => 'documents.index',
+            'icon' => 'fas fa-fw fa-file-alt',
+        ],
         ['header' => 'ADMINISTRATION'],
-
         [
             'text' => 'my_account',
-            'route' => 'account',
+            'route' => 'my-account',
             'icon' => 'fas fa-fw fa-gear',
         ],
         [
             'text' => 'users',
             'route' => 'admin.users.index',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa-fw fa-users',
             'can' => 'users.view'
         ],
         [

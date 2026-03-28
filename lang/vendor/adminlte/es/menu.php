@@ -43,6 +43,7 @@ return [
     'operations'    => 'Operaciones',
 
     'documents'              => 'Documentos',
+    'my_documents'           => 'Mis Documentos',
     'raw_material_documents' => 'Documentos MP',
     'transactions'           => 'Transacciones',
     'movements'              => 'Movimientos',

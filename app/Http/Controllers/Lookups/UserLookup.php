@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Lookups;
 
 use App\Http\Controllers\Controller;
-use App\Models\DocumentCategory;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class DocumentCategoryLookup extends Controller
+class UserLookup extends Controller
 {
     public function select2(Request $request): JsonResponse
     {
-        $query = DocumentCategory::query();
+        $query = User::query();
 
         if ($request->has('active')) {
             $request->boolean('active') ? $query->active() : $query->inactive();
@@ -19,16 +19,21 @@ class DocumentCategoryLookup extends Controller
 
         if ($request->has('term')) {
             $term = $request->string('term');
-            $query->where('name', 'like', "%$term%");
+            $query->where(
+                fn($q) => $q
+                    ->where('name', 'like', "%$term%")
+                    ->orWhere('email', 'like', "$term%")
+            );
         }
 
         $query->orderBy('name');
 
-        $results = $query->paginate(16, ['id', 'name']);
+        $results = $query->paginate(16, ['id', 'name', 'email']);
 
-        $map = $results->map(fn(DocumentCategory $item) => [
+        $map = $results->map(fn(User $item) => [
             'id'          => $item->id,
             'text'        => $item->name,
+            'description' => $item->email,
         ]);
 
         return response()->json([

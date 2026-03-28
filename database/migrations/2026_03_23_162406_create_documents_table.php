@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('user_id')->constrained('users')->restrictOnDelete();
-            $table->foreignId('category_id')->constrained('document_categories')->restrictOnDelete();
 
             $table->string('status', 32)->index()->default('pending');
             $table->dateTime('updated_status_at')->nullable();

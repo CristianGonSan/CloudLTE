@@ -13,7 +13,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 /**
  * @property int $id
  * @property int $user_id
- * @property int $category_id
  * @property DocumentStatus $status
  * @property \Illuminate\Support\Carbon|null $updated_status_at
  * @property string|null $notes
@@ -21,7 +20,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DocumentActivity> $activities
  * @property-read int|null $activities_count
- * @property-read \App\Models\DocumentCategory $category
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
  * @property-read int|null $media_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DocumentSignatory> $signatories
@@ -30,7 +28,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Document newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Document newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Document query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereNotes($value)
@@ -60,11 +57,6 @@ class Document extends Model implements HasMedia
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(DocumentCategory::class, 'category_id');
     }
 
     public function signatories(): HasMany

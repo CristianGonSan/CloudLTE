@@ -11,3 +11,131 @@
  */
 
 
+namespace App\Models{
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property int $category_id
+ * @property DocumentStatus $status
+ * @property \Illuminate\Support\Carbon|null $updated_status_at
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DocumentActivity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DocumentSignatory> $signatories
+ * @property-read int|null $signatories_count
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereUpdatedStatusAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereUserId($value)
+ * @mixin \Eloquent
+ */
+	class Document extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
+}
+
+namespace App\Models{
+/**
+ * @property int $id
+ * @property int $document_id
+ * @property int|null $user_id
+ * @property ActivityType $type
+ * @property array<array-key, mixed>|null $details
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Document $document
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity whereDetails($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity whereDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity whereUserId($value)
+ * @mixin \Eloquent
+ */
+	class DocumentActivity extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property int $id
+ * @property int $document_id
+ * @property int $user_id
+ * @property SignatoryStatus $status
+ * @property \Illuminate\Support\Carbon|null $updated_status_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Document $document
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory whereDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory whereUpdatedStatusAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory whereUserId($value)
+ * @mixin \Eloquent
+ */
+	class DocumentSignatory extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string $password
+ * @property bool $is_active
+ * @property string|null $remember_token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read int|null $documents_count
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
+ * @property-read int|null $permissions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Role> $roles
+ * @property-read int|null $roles_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User active()
+ * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User inactive()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User permission($permissions, $without = false)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User role($roles, $guard = null, $without = false)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutPermission($permissions)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutRole($roles, $guard = null)
+ * @mixin \Eloquent
+ */
+	class User extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
+}
+

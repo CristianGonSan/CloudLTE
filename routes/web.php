@@ -39,7 +39,11 @@ Route::middleware(['auth', 'check.user.active'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('my-account', [AccountController::class, 'show'])->name('my-account');
 
-
+    /*
+    |--------------------------------------------------------------------------
+    | Admin
+    |--------------------------------------------------------------------------
+    */
     Route::prefix('admin')->name('admin.')->group(function () {
         //Users
         Route::prefix('users')->name('users.')->group(function () {
@@ -64,24 +68,9 @@ Route::middleware(['auth', 'check.user.active'])->group(function () {
         Route::get('create', [DocumentController::class, 'create'])->name('create');
         Route::get('{user}', [DocumentController::class, 'show'])->name('show');
         Route::get('{user}/edit', [DocumentController::class, 'edit'])->name('edit');
-    });
 
-    //My Documents
-    Route::prefix('my-documents')->name('my-documents.')->group(function () {
-        Route::get('', [DocumentController::class, 'index'])->name('index');
-        Route::get('create', [DocumentController::class, 'create'])->name('create');
-        Route::get('{user}', [DocumentController::class, 'show'])->name('show');
-        Route::get('{user}/edit', [DocumentController::class, 'edit'])->name('edit');
+        Route::get('browser', [DocumentController::class, 'browser'])->name('browser');
     });
-
-    //Document Categories
-    Route::prefix('document-categories')->name('document-categories.')->group(function () {
-        Route::get('', [DocumentCategoryController::class, 'index'])->name('index')->middleware('permission:categories.view');
-        Route::get('create', [DocumentCategoryController::class, 'create'])->name('create')->middleware('permission:categories.create');
-        Route::get('{user}', [DocumentCategoryController::class, 'show'])->name('show')->middleware('permission:categories.view');
-        Route::get('{user}/edit', [DocumentCategoryController::class, 'edit'])->name('edit')->middleware('permission:categories.edit');
-    });
-
 
     /*
     |--------------------------------------------------------------------------
@@ -89,8 +78,6 @@ Route::middleware(['auth', 'check.user.active'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::prefix('lookups')->name('lookups.')->group(function () {
-        Route::get('categories/select2', [DocumentCategoryLookup::class, 'select2'])
-            ->name('categories.select2');
         Route::get('users/select2', [UserLookup::class, 'select2'])
             ->name('users.select2');
     });
