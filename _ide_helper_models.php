@@ -14,91 +14,6 @@
 namespace App\Models{
 /**
  * @property int $id
- * @property int $user_id
- * @property int $category_id
- * @property DocumentStatus $status
- * @property \Illuminate\Support\Carbon|null $updated_status_at
- * @property string|null $notes
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DocumentActivity> $activities
- * @property-read int|null $activities_count
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
- * @property-read int|null $media_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DocumentSignatory> $signatories
- * @property-read int|null $signatories_count
- * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Document newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Document newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Document query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereUpdatedStatusAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereUserId($value)
- * @mixin \Eloquent
- */
-	class Document extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
-}
-
-namespace App\Models{
-/**
- * @property int $id
- * @property int $document_id
- * @property int|null $user_id
- * @property ActivityType $type
- * @property array<array-key, mixed>|null $details
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Document $document
- * @property-read \App\Models\User|null $user
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity whereDetails($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity whereDocumentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentActivity whereUserId($value)
- * @mixin \Eloquent
- */
-	class DocumentActivity extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * @property int $id
- * @property int $document_id
- * @property int $user_id
- * @property SignatoryStatus $status
- * @property \Illuminate\Support\Carbon|null $updated_status_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Document $document
- * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory whereDocumentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory whereUpdatedStatusAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentSignatory whereUserId($value)
- * @mixin \Eloquent
- */
-	class DocumentSignatory extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * @property int $id
  * @property string $name
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
@@ -137,5 +52,17 @@ namespace App\Models{
  * @mixin \Eloquent
  */
 	class User extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
+}
+
+namespace App\Models{
+/**
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read int|null $media_count
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserFile newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserFile newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserFile query()
+ */
+	class UserFile extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
 }
 

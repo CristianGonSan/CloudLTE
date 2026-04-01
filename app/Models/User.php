@@ -24,8 +24,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
- * @property-read int|null $documents_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserFile> $files
+ * @property-read int|null $files_count
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
  * @property-read int|null $media_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
@@ -77,12 +77,12 @@ class User extends Authenticatable implements HasMedia
 
     public function isInUse(): bool
     {
-        return $this->documents()->exists();
+        return $this->files()->exists();
     }
 
-    public function documents(): HasMany
+    public function files(): HasMany
     {
-        return $this->hasMany(Document::class, 'user_id');
+        return $this->hasMany(UserFile::class, 'user_id');
     }
 
     public function registerMediaCollections(): void

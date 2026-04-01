@@ -7,6 +7,23 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
+.card-hover-shadow {
+    transition: box-shadow 0.3s ease;
+}
+
+.card-hover-shadow:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-hover-border {
+    transition: border-color 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.card-hover-border:hover {
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
 .card-img-top {
     width: 100%;
     border-top-left-radius: calc(0.25rem - 1px);

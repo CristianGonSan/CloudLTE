@@ -7,5 +7,23 @@
 @stop
 
 @section('content')
-    {{-- <livewire:Documents.DocumentCategories /> --}}
+    <div class="mb-3">
+        <button class="btn btn-outline-primary" onclick="openComponentFileUpload()">
+            <i class="fas fa-fw fa-file-arrow-up mr-1"></i>Subir archivo
+        </button>
+    </div>
+
+    <livewire:UserFiles.UserFilesList />
+
+    <livewire:UserFiles.UserFileUpload />
+
+    <livewire:UserFiles.ModalFileShow />
 @stop
+
+@push('js')
+    <script>
+        function openComponentFileUpload() {
+            Livewire.dispatch('openComponentUserFileUpload');
+        }
+    </script>
+@endpush

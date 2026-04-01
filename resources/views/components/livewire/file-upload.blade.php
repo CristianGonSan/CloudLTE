@@ -1,4 +1,17 @@
-@props(['name', 'label' => null, 'fgroupClass' => null, 'labelClass' => null, 'accept' => null, 'hint' => null])
+@props([
+    'name',
+    'model',
+    'label' => null,
+    'fgroupClass' => null,
+    'labelClass' => null,
+    'accept' => null,
+    'hint' => null,
+    'disableFeedback' => null,
+])
+
+@php
+    $model ??= $name;
+@endphp
 
 <div class="form-group {{ $fgroupClass }}" x-data="attachmentUpload()" x-on:livewire-upload-start="onStart"
     x-on:livewire-upload-finish="onFinish" x-on:livewire-upload-error="onError"
@@ -18,7 +31,7 @@
 
     <div class="custom-file" x-show="!uploading">
         <input type="file" id="{{ $name }}"
-            class="custom-file-input cursor-pointer @error($name) is-invalid @enderror" wire:model="{{ $name }}"
+            class="custom-file-input cursor-pointer @error($name) is-invalid @enderror" wire:model="{{ $model }}"
             @if ($accept) accept="{{ $accept }}" @endif>
         <label class="custom-file-label" for="{{ $name }}">
             {{ $slot->isNotEmpty() ? $slot : 'Seleccionar archivo' }}
@@ -39,9 +52,11 @@
         </div>
     </div>
 
-    @error($name)
-        <span class="invalid-feedback d-block">{{ $message }}</span>
-    @enderror
+    @if (!$disableFeedback)
+        @error($name)
+            <span class="invalid-feedback d-block">{{ $message }}</span>
+        @enderror
+    @endif
 </div>
 
 @once

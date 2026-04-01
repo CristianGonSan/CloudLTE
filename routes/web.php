@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Documents\DocumentController;
+use App\Http\Controllers\UserFiles\UserFileController;
 use Illuminate\Support\Facades\Route;
 
 // Auth
@@ -11,9 +11,8 @@ use App\Http\Controllers\Auth\LoginController;
 // Admin
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Documents\DocumentCategoryController;
-use App\Http\Controllers\Lookups\DocumentCategoryLookup;
 use App\Http\Controllers\Lookups\UserLookup;
+use App\Http\Controllers\MediaController;
 
 Route::redirect('', 'dashboard')
     ->name('root');
@@ -63,13 +62,20 @@ Route::middleware(['auth', 'check.user.active'])->group(function () {
     });
 
     //Documents
-    Route::prefix('documents')->name('documents.')->group(function () {
-        Route::get('', [DocumentController::class, 'index'])->name('index');
-        Route::get('create', [DocumentController::class, 'create'])->name('create');
-        Route::get('{user}', [DocumentController::class, 'show'])->name('show');
-        Route::get('{user}/edit', [DocumentController::class, 'edit'])->name('edit');
+    Route::prefix('user-files')->name('user-files.')->group(function () {
+        Route::get('', [UserFileController::class, 'index'])->name('index');
+        Route::get('create', [UserFileController::class, 'create'])->name('create');
+        Route::get('{user}', [UserFileController::class, 'show'])->name('show');
+        Route::get('{user}/edit', [UserFileController::class, 'edit'])->name('edit');
 
-        Route::get('browser', [DocumentController::class, 'browser'])->name('browser');
+        Route::get('browser', [UserFileController::class, 'browser'])->name('browser');
+    });
+
+    Route::prefix('media')->name('media.')->group(function () {
+        Route::get('{media}/show', [MediaController::class, 'show'])
+            ->name('show');
+        Route::get('{media}/download', [MediaController::class, 'download'])
+            ->name('download');
     });
 
     /*
