@@ -33,10 +33,25 @@ class ModalFileShow extends Component
         $this->dispatch('hideModalUserFileShow');
     }
 
+    public function delete()
+    {
+        $userFile = $this->userFile();
+
+        if ($this->authorize('delete', $userFile)) {
+            $userFile->hardDelete();
+            $this->userFileId = null;
+            $this->toastSuccess("Archivo eliminado");
+            $this->closeModal();
+            $this->dispatch('fileDeleted');
+        } else {
+            $this->toastError("Sin autorización");
+        }
+    }
+
     private function userFile(): ?UserFile
     {
         if ($this->userFileId) {
-            return UserFile::with(['media'])->findOr($this->userFileId);
+            return UserFile::with(['media'])->find($this->userFileId);
         }
         return null;
     }

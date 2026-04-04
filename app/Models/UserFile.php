@@ -31,6 +31,8 @@ class UserFile extends Model implements HasMedia
 {
     use InteractsWithMedia;
 
+    private ?self $singleton = null;
+
     protected $fillable = [
         'user_id',
         'notes',
@@ -44,6 +46,11 @@ class UserFile extends Model implements HasMedia
     public function getFile(): ?Media
     {
         return $this->getFirstMedia('file');
+    }
+
+    public function getFileSingleton(): ?Media
+    {
+        return $this->singleton ??= $this->getFile();
     }
 
     public function hardDelete(): void

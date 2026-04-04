@@ -131,6 +131,7 @@ class UserFilesList extends Component
     }
 
     #[On('fileSaved')]
+    #[On('fileDeleted')]
     public function resetFilters(): void
     {
         $this->reset(['searchTerm', 'group', 'onlyMyFiles', 'dateFrom', 'dateTo', 'orderBy']);

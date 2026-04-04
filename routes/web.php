@@ -72,9 +72,9 @@ Route::middleware(['auth', 'check.user.active'])->group(function () {
     });
 
     Route::prefix('media')->name('media.')->group(function () {
-        Route::get('{media}/show', [MediaController::class, 'show'])
+        Route::get('{mediaId}/{fileName?}', [MediaController::class, 'show'])
             ->name('show');
-        Route::get('{media}/download', [MediaController::class, 'download'])
+        Route::get('{mediaId}/{fileName?}/download', [MediaController::class, 'download'])
             ->name('download');
     });
 

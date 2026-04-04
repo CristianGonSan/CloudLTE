@@ -2,6 +2,7 @@
 
 namespace App\Livewire\UserFiles;
 
+use App\Rules\FileSupport;
 use Exception;
 use App\Enums\FileExtensionSupport;
 use App\Models\UserFile;
@@ -83,7 +84,7 @@ class UserFileUpload extends Component
     public function rules(): array
     {
         return [
-            'file'  => ['required', 'file', File::types(FileExtensionSupport::values())->max(10240)],
+            'file'  => ['required', 'file', 'max:10240', new FileSupport()],
             'notes' => ['nullable', 'string', 'max:500'],
         ];
     }

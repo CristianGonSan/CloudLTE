@@ -44,7 +44,7 @@
 
         <div class="col-md-1 mt-1">
             <div class="custom-control custom-checkbox">
-                <input type="checkbox" wire:model.live="onlyMyDocuments" class="custom-control-input" id="onlyMyDocs">
+                <input type="checkbox" wire:model.live="onlyMyFiles" class="custom-control-input" id="onlyMyDocs">
                 <label class="custom-control-label small" for="onlyMyDocs">Míos</label>
             </div>
         </div>
@@ -79,12 +79,13 @@
                                     aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v"></i>
                                 </button>
-                                <div class="dropdown-menu dropdown-menu-right shadow-sm">
+                                <div class="dropdown-menu dropdown-menu-right">
                                     <button class="dropdown-item" type="button"
                                         x-on:click="$dispatch('openComponentUserFileShow', { userFileId: {{ $userFile->id }} })">
                                         <i class="fas fa-eye fa-fw mr-3"></i>Ver detalles
                                     </button>
-                                    <a class="dropdown-item" href="{{ route('media.show', $media->id) }}"
+                                    <a class="dropdown-item"
+                                        href="{{ route('media.show', ['mediaId' => $media->id, 'fileName' => $media->file_name]) }}"
                                         target="_blank">
                                         <i class="fas fa-external-link-alt fa-fw mr-3"></i>Abrir en pestaña
                                     </a>
@@ -96,7 +97,8 @@
                                     @endcan
 
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{{ route('media.download', $media->id) }}">
+                                    <a class="dropdown-item"
+                                        href="{{ route('media.download', ['mediaId' => $media->id, 'fileName' => $media->file_name]) }}">
                                         <i class="fas fa-download fa-fw mr-3"></i>Descargar
                                     </a>
                                 </div>
@@ -105,9 +107,9 @@
                     </div>
 
                     <div class="card-body py-2">
-                        <h6 class="mb-1 font-weight-bold text-truncate" title="{{ $media->name }}">
+                        <div class="mb-1 font-weight-bold text-truncate h6" title="{{ $media->name }}">
                             {{ $media->name }}
-                        </h6>
+                        </div>
                         <div class="d-flex align-items-center">
                             <span class="small text-muted">
                                 {{ $media->human_readable_size }}

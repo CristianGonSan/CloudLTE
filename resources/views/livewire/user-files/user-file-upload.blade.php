@@ -52,7 +52,8 @@
                         {{ $file?->getClientOriginalName() ?? 'Seleccionar archivo' }}
                     </x-livewire.file-upload>
 
-                    <x-adminlte-textarea name="notes" fgroup-class="mb-0" placeholder="notas..." wire:model='notes' />
+                    <x-adminlte-textarea name="notes" fgroup-class="mb-0" placeholder="notas..." wire:model='notes'
+                        maxlength="500" />
                 </div>
 
                 <div class="modal-footer">

@@ -2,6 +2,7 @@
 
 namespace App\Enums;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Mime\MimeTypes;
 
 enum FileExtensionSupport: string
@@ -115,7 +116,7 @@ enum FileExtensionSupport: string
             self::Jpg, self::Jpeg, self::Png,
             self::Webp, self::Gif, self::Svg,
             self::Jfif, self::Bmp, self::Tiff,
-            self::Tif, self::Heic, self::Ico                   => 'Imagen',
+            self::Tif, self::Heic, self::Ico        => 'Imagen',
             self::Mp4, self::Avi, self::Mov,
             self::Mkv, self::Webm                   => 'Video',
             self::Mp3, self::Wav, self::Ogg,
@@ -125,6 +126,36 @@ enum FileExtensionSupport: string
             self::Json                              => 'JSON',
             self::Xml                               => 'XML',
             self::Html, self::Htm                   => 'HTML',
+
+            // SAT — e.firma y Certificados de Sello Digital
+            self::Cer                               => 'Certificado SAT (.cer)',
+            self::Key                               => 'Llave privada SAT (.key)',
+            self::Req                               => 'Requerimiento de certificado SAT',
+
+            // SAT — Declaraciones y contabilidad electrónica
+            self::Dec                               => 'Declaración fiscal (DeclaraSAT)',
+            self::Diot                              => 'DIOT - Operaciones con Terceros',
+            self::Xslt                              => 'Hoja de transformación CFDI (XSLT)',
+
+            // IMSS / SUA
+            self::Sua                               => 'SUA - Cuotas IMSS',
+            self::Dis                               => 'Dispersión de nómina IMSS',
+            self::Idse                              => 'IDSE - Movimientos afiliatorios IMSS',
+            self::Noi                               => 'Nómina Integral (NOI)',
+
+            // INFONAVIT
+            self::Sin                               => 'INFONAVIT - Aportaciones (SIN)',
+
+            // STPS / nómina
+            self::Sar                               => 'Aportaciones SAR/Afore',
+
+            // Contabilidad / ERP
+            self::Pol                               => 'Pólizas contables (COI ASPEL)',
+            self::Coi                               => 'Catálogo/Respaldo COI ASPEL',
+            self::Bdf                               => 'Balanza de comprobación',
+            self::Sae                               => 'Respaldo SAE ASPEL',
+            self::Nomixml                           => 'CFDI Nómina XML (v1.2)',
+
             self::Unknown                           => 'Desconocido',
         };
     }
@@ -201,12 +232,6 @@ enum FileExtensionSupport: string
 
     public function mimes(): array
     {
-        $customMimes =  config('file-extensions.customMimes');
-
-        if (isset($customMimes[$this->value])) {
-            return $customMimes[$this->value];
-        }
-
         return MimeTypes::getDefault()->getMimeTypes($this->value);
     }
 
@@ -215,6 +240,11 @@ enum FileExtensionSupport: string
         $extension = strtolower($extension);
 
         return self::tryFrom($extension) ?? self::Unknown;
+    }
+
+    public static function fromFileExtension(UploadedFile $file): self
+    {
+        return self::fromExtension($file->getClientOriginalExtension());
     }
 
     public static function fromMime(string $mimeType): self
@@ -240,5 +270,40 @@ enum FileExtensionSupport: string
     public static function values(): array
     {
         return array_map(fn($case) => $case->value, self::cases());
+    }
+
+    public static function mimeValues(): array
+    {
+        return collect(self::cases())
+            ->flatMap(fn(FileExtensionSupport $ext) => $ext->mimes())
+            ->unique()
+            ->values()
+            ->all();
+    }
+
+    public function viewer(): ?string
+    {
+        return match ($this) {
+            self::Jpg, self::Jpeg, self::Png,
+            self::Webp, self::Gif, self::Svg,
+            self::Jfif, self::Bmp                       => 'image',
+
+            self::Pdf                                   => 'pdf',
+
+            self::Mp4, self::Webm, self::Mov            => 'video',
+
+            self::Mp3, self::Wav, self::Ogg,
+            self::Flac, self::Aac                       => 'audio',
+
+            self::Txt, self::Json, self::Xml,
+            self::Csv, self::Html, self::Htm            => 'text',
+
+            default                                     => null,
+        };
+    }
+
+    public function isViewerSupported(): bool
+    {
+        return $this->viewer() !== null;
     }
 }
