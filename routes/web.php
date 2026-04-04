@@ -71,18 +71,11 @@ Route::middleware(['auth', 'check.user.active'])->group(function () {
         Route::get('browser', [UserFileController::class, 'browser'])->name('browser');
     });
 
-    Route::prefix('media')->name('media.')->group(function () {
-        Route::get('{mediaId}/{fileName?}', [MediaController::class, 'show'])
-            ->name('show');
-
-        Route::get('{mediaId}/{fileName?}/download', [MediaController::class, 'download'])
+    Route::prefix('files')->name('files.')->group(function () {
+        Route::get('{userFileId}/content/{fileName?}', [MediaController::class, 'showByUserFileId'])
+            ->name('content');
+        Route::get('{userFileId}/content/{fileName?}/download', [MediaController::class, 'downloadByUserFileId'])
             ->name('download');
-
-        Route::get('by-file/{fileId}/{fileName?}', [MediaController::class, 'showByUserFileId'])
-            ->name('byFile.show');
-
-        Route::get('by-file/{fileId}/{fileName?}/download', [MediaController::class, 'downloadByUserFileId'])
-            ->name('byFile.download');
     });
 
     /*
