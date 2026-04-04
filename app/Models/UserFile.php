@@ -53,6 +53,16 @@ class UserFile extends Model implements HasMedia
         return $this->singleton ??= $this->getFile();
     }
 
+    public function getUrl(bool $download = false)
+    {
+        $media = Media::where('model_type', '=', UserFile::class)
+            ->where('model_id', '=', $this->id)->firstOrFail(['model_type', 'model_id', 'file_name']);
+
+        $route = $download ? 'media.byFile.download' : 'media.byFile.show';
+
+        return route($route, ['fileId' => $this->id, 'fileName' => $media->file_name]);
+    }
+
     public function hardDelete(): void
     {
         $this->deleteAllMedia();

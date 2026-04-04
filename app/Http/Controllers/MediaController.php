@@ -18,9 +18,28 @@ class MediaController extends Controller
         return $this->attachment($this->findMedia($mediaId));
     }
 
+    public function showByUserFileId(int $userFileId): BinaryFileResponse
+    {
+        return $this->inline($this->findMediaByUserFileId($userFileId));
+    }
+
+    public function downloadByUserFileId(int $userFileId): BinaryFileResponse
+    {
+        return $this->attachment($this->findMediaByUserFileId($userFileId));
+    }
+
     private function findMedia(int $mediaId): Media
     {
         $media = Media::findOrFail($mediaId);
+
+        abort_unless(file_exists($media->getPath()), 404);
+
+        return $media;
+    }
+
+    private function findMediaByUserFileId(int $userFileId): Media
+    {
+        $media = Media::where('model_type', '=', UserFile::class)->where('model_id', '=', $userFileId)->firstOrFail();
 
         abort_unless(file_exists($media->getPath()), 404);
 

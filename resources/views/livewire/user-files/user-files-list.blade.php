@@ -84,9 +84,7 @@
                                         x-on:click="$dispatch('openComponentUserFileShow', { userFileId: {{ $userFile->id }} })">
                                         <i class="fas fa-eye fa-fw mr-3"></i>Ver detalles
                                     </button>
-                                    <a class="dropdown-item"
-                                        href="{{ route('media.show', ['mediaId' => $media->id, 'fileName' => $media->file_name]) }}"
-                                        target="_blank">
+                                    <a class="dropdown-item" href="{{ $userFile->getUrl() }}" target="_blank">
                                         <i class="fas fa-external-link-alt fa-fw mr-3"></i>Abrir en pestaña
                                     </a>
                                     @can('delete', $userFile)
@@ -97,8 +95,7 @@
                                     @endcan
 
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item"
-                                        href="{{ route('media.download', ['mediaId' => $media->id, 'fileName' => $media->file_name]) }}">
+                                    <a class="dropdown-item" href="{{ $userFile->getUrl(true) }}">
                                         <i class="fas fa-download fa-fw mr-3"></i>Descargar
                                     </a>
                                 </div>

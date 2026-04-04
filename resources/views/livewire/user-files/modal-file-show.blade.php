@@ -16,7 +16,7 @@
                         $media = $userFile->getFile();
                         $extension = FileExtensionSupport::fromExtension($media->extension);
                         $viewer = $extension->viewer();
-                        $fileUrl = route('media.show', $userFile->id);
+                        $fileUrl = $userFile->getUrl();
                         $user = $userFile->user;
                     @endphp
 
@@ -110,8 +110,7 @@
                                         </button>
 
                                         <div class="btn-group btn-group-sm">
-                                            <a href="{{ route('media.download', ['mediaId' => $media->id, 'fileName' => $media->file_name]) }}"
-                                                class="btn btn-outline-primary">
+                                            <a href="{{ $userFile->getUrl(true) }}" class="btn btn-outline-primary">
                                                 <i class="fas fa-download mr-1"></i> Descargar
                                             </a>
                                             <button type="button"
@@ -120,8 +119,7 @@
                                                 <i class="fas fa-fw fa-ellipsis-v"></i>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item"
-                                                    href="{{ route('media.show', ['mediaId' => $media->id, 'fileName' => $media->file_name]) }}"
+                                                <a class="dropdown-item" href="{{ $userFile->getUrl() }}"
                                                     target="_blank">
                                                     <i class="fas fa-external-link-alt mr-2"></i>
                                                     Abrir en otra ventana
