@@ -34,8 +34,9 @@
             @endcan
 
             @can('users.delete')
-                <x-livewire.loading-button label="Eliminar" theme="outline-danger" class="mr-1" icon="trash" wire:click="delete"
-                    :disabled="$isInUse" :title="$isInUse ? 'No se puede eliminar: el usuario está en uso' : ''" />
+                <x-livewire.loading-button label="Eliminar" theme="outline-danger" class="mr-1" icon="trash"
+                    wire:click="delete" wire:swal-confirm="¿Eliminar este usuario?" swal-icon="warning" :disabled="$isInUse"
+                    :title="$isInUse ? 'No se puede eliminar: el usuario está en uso' : ''" />
             @endcan
 
             <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary mr-1">

@@ -152,7 +152,7 @@ return [
     |
     */
 
-    'layout_topnav'         => null,
+    'layout_topnav'         => false,
     'layout_boxed'          => null,
     'layout_fixed_sidebar'  => true,
     'layout_fixed_navbar'   => true,
@@ -194,8 +194,8 @@ return [
     'classes_brand'             => '',
     'classes_brand_text'        => '',
     'classes_content_wrapper'   => '',
-    'classes_content_header'    => 'container',
-    'classes_content'           => 'container',
+    'classes_content_header'    => '',
+    'classes_content'           => '',
     'classes_sidebar'           => 'sidebar-dark-primary elevation-1',
     'classes_sidebar_nav'       => '',
     'classes_topnav'            => 'navbar-dark navbar-dark-dark',
@@ -388,12 +388,12 @@ return [
                 [
                     'type' => 'css',
                     'asset' => true,
-                    'location' => 'vendor/select2-bootstrap4-theme/select2-bootstrap4.min.css',
+                    'location' => 'vendor/select2/css/select2.min.css',
                 ],
                 [
                     'type' => 'css',
                     'asset' => true,
-                    'location' => 'vendor/select2/css/select2.min.css',
+                    'location' => 'vendor/select2-bootstrap4-theme/select2-bootstrap4.min.css',
                 ],
                 [
                     'type' => 'css',
@@ -408,12 +408,12 @@ return [
                 [
                     'type' => 'js',
                     'asset' => true,
-                    'location' => 'vendor\select2\js\i18n\es.js',
+                    'location' => 'vendor/select2/js/i18n/es.js',
                 ],
                 [
                     'type' => 'js',
                     'asset' => true,
-                    'location' => 'js\select2\livewire-integration.js',
+                    'location' => 'js/select2/livewire-integration.js',
                 ],
             ],
         ],
@@ -422,8 +422,8 @@ return [
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => 'https://cdn.jsdelivr.net/npm/chart.js',
+                    'asset' => true,
+                    'location' => 'vendor/chartjs/chart.min.js'
                 ],
             ],
         ],
@@ -432,18 +432,18 @@ return [
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '/js/sweetalert2/livewire-integration.js',
+                    'asset' => true,
+                    'location' => 'js/sweetalert2/sweetalert2.min.js',
                 ],
                 [
                     'type' => 'js',
                     'asset' => true,
-                    'location' => '/js/sweetalert2/ononline-alert.js'
+                    'location' => 'js/sweetalert2/livewire-integration.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'js/sweetalert2/ononline-alert.js'
                 ]
             ],
         ],
@@ -453,7 +453,7 @@ return [
                 [
                     'type' => 'css',
                     'asset' => true,
-                    'location' => '/css/custom-styles.css'
+                    'location' => 'css/custom-styles.css'
                 ]
             ]
         ]

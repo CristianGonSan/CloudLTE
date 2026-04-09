@@ -32,7 +32,7 @@ trait FlashToast
     protected function flashToast(string $text, ?string $title = null, string $icon): void
     {
         $hasTitle = !empty($title);
-        session()->flash('sweetalert2_flash', [
+        session()->put('sweetalert2_flash', [
             'title' => $hasTitle ? $title : $text,
             'text'  => $hasTitle ? $text : null,
             'icon'  => $icon,

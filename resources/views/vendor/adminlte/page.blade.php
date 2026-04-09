@@ -59,7 +59,7 @@
     @if (session()->has('sweetalert2_flash'))
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                Swal.fire(@json(session('sweetalert2_flash')));
+                Swal.fire(@json(session()->pull('sweetalert2_flash')));
             });
         </script>
     @endif
