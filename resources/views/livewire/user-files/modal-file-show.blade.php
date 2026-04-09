@@ -99,6 +99,24 @@
                                         </div>
                                     </div>
 
+                                    <div class="d-flex align-items-start mb-4">
+                                        <div class="bg-light rounded d-flex align-items-center justify-content-center mr-3"
+                                            style="width: 36px; height: 36px;">
+                                            <i class="fas fa-code-branch text-muted"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-weight-bold text-dark" style="line-height: 1.2;">
+                                                Versión {{ $userFile->version ?? '1.0' }}
+                                            </div>
+                                            <small class="text-muted">
+                                                @if ($userFile->edited_at)
+                                                    Editado hace {{ $userFile->edited_at->diffForHumans(null, true) }}
+                                                @else
+                                                    Sin ediciones
+                                                @endif
+                                            </small>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="p-3 border-top">
@@ -124,6 +142,13 @@
                                                     <i class="fas fa-external-link-alt mr-2"></i>
                                                     Abrir en otra ventana
                                                 </a>
+                                                @if ($extension->editor() === 'pdf')
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('files.editor.pdf', $userFile->id) }}">
+                                                        <i class="fas fa-edit mr-2"></i>
+                                                        Editar PDF
+                                                    </a>
+                                                @endif
                                                 @can('delete', $userFile)
                                                     <div class="dropdown-divider"></div>
                                                     <button class="dropdown-item text-danger"

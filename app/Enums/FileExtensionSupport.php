@@ -2,6 +2,7 @@
 
 namespace App\Enums;
 
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Mime\MimeTypes;
 
@@ -235,52 +236,6 @@ enum FileExtensionSupport: string
         return MimeTypes::getDefault()->getMimeTypes($this->value);
     }
 
-    public static function fromExtension(string $extension): self
-    {
-        $extension = strtolower($extension);
-
-        return self::tryFrom($extension) ?? self::Unknown;
-    }
-
-    public static function fromFileExtension(UploadedFile $file): self
-    {
-        return self::fromExtension($file->getClientOriginalExtension());
-    }
-
-    public static function fromMime(string $mimeType): self
-    {
-        $extensions = MimeTypes::getDefault()->getExtensions($mimeType);
-
-        if (empty($extensions)) {
-            return self::Unknown;
-        }
-
-        return self::fromExtension($extensions[0]);
-    }
-
-    public static function toSelectOptions(): array
-    {
-        $array = [];
-        foreach (self::cases() as $case) {
-            $array[$case->value] = $case->label();
-        }
-        return $array;
-    }
-
-    public static function values(): array
-    {
-        return array_map(fn($case) => $case->value, self::cases());
-    }
-
-    public static function mimeValues(): array
-    {
-        return collect(self::cases())
-            ->flatMap(fn(FileExtensionSupport $ext) => $ext->mimes())
-            ->unique()
-            ->values()
-            ->all();
-    }
-
     public function viewer(): ?string
     {
         return match ($this) {
@@ -305,5 +260,70 @@ enum FileExtensionSupport: string
     public function isViewerSupported(): bool
     {
         return $this->viewer() !== null;
+    }
+
+    public function editor(): ?string
+    {
+        return match ($this) {
+            self::Pdf => 'pdf',
+            default => null
+        };
+    }
+
+    public function isEditorSupported(): bool
+    {
+        return $this->editor() !== null;
+    }
+
+    public static function fromExtension(string $extension): self
+    {
+        $extension = strtolower($extension);
+
+        return self::tryFrom($extension) ?? self::Unknown;
+    }
+
+    public static function fromFileExtension(UploadedFile $file): self
+    {
+        return self::fromExtension($file->getClientOriginalExtension());
+    }
+
+    public static function fromMime(string $mimeType): self
+    {
+        $extensions = MimeTypes::getDefault()->getExtensions($mimeType);
+
+        if (empty($extensions)) {
+            return self::Unknown;
+        }
+
+        return self::fromExtension($extensions[0]);
+    }
+
+    public static function fromMedia(Media $media): self
+    {
+        $extension = strtolower($media->extension);
+        return self::tryFrom($extension) ?? self::Unknown;
+    }
+
+    public static function toSelectOptions(): array
+    {
+        $array = [];
+        foreach (self::cases() as $case) {
+            $array[$case->value] = $case->label();
+        }
+        return $array;
+    }
+
+    public static function values(): array
+    {
+        return array_map(fn($case) => $case->value, self::cases());
+    }
+
+    public static function mimeValues(): array
+    {
+        return collect(self::cases())
+            ->flatMap(fn(FileExtensionSupport $ext) => $ext->mimes())
+            ->unique()
+            ->values()
+            ->all();
     }
 }

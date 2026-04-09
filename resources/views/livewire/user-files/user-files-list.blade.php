@@ -123,7 +123,7 @@
                             </div>
                             <div class="text-nowrap">
                                 <small class="text-muted">
-                                    {{ $media->created_at->diffForHumans(null, true) }}
+                                    {{ $userFile->created_at->diffForHumans(null, true) }}
                                 </small>
                             </div>
                         </div>

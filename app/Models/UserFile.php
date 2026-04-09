@@ -14,6 +14,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property string|null $notes
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $version
+ * @property \Illuminate\Support\Carbon|null $edited_at
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
  * @property-read int|null $media_count
  * @property-read \App\Models\User $user
@@ -21,10 +23,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserFile newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserFile query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserFile whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserFile whereEditedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserFile whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserFile whereNotes($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserFile whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserFile whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserFile whereVersion($value)
  * @mixin \Eloquent
  */
 class UserFile extends Model implements HasMedia
@@ -35,7 +39,13 @@ class UserFile extends Model implements HasMedia
 
     protected $fillable = [
         'user_id',
+        'version',
+        'edited_at',
         'notes',
+    ];
+
+    protected $casts = [
+        'edited_at' => 'datetime',
     ];
 
     public function user(): BelongsTo
@@ -59,8 +69,13 @@ class UserFile extends Model implements HasMedia
             ->where('model_id', '=', $this->id)->firstOrFail(['model_type', 'model_id', 'file_name']);
 
         $route = $download ? 'files.download' : 'files.content';
+        $url = route($route, ['userFileId' => $this->id, 'fileName' => $media->file_name]);
 
-        return route($route, ['userFileId' => $this->id, 'fileName' => $media->file_name]);
+        if ($this->version > 1) {
+            $url .= "?v={$this->version}";
+        }
+
+        return $url;
     }
 
     public function hardDelete(): void

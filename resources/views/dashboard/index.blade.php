@@ -3,16 +3,20 @@
 @section('title_prefix', 'Dashboard |')
 
 @section('content_header')
-    <h1 class="m-0">Dashboard</h1>
-@stop
+    <div class="d-flex justify-content-between align-items-center">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active">Inicio</li>
+            </ol>
+        </nav>
 
-@section('content')
-    <div class="mb-3">
         <button class="btn btn-outline-primary" onclick="openComponentFileUpload()">
             <i class="fas fa-fw fa-file-arrow-up mr-1"></i>Subir archivo
         </button>
     </div>
+@endsection
 
+@section('content')
     <livewire:UserFiles.UserFilesList />
 
     <livewire:UserFiles.UserFileUpload />
@@ -20,10 +24,10 @@
     <livewire:UserFiles.ModalFileShow />
 @stop
 
-@push('js')
+@section('js')
     <script>
         function openComponentFileUpload() {
             Livewire.dispatch('openComponentUserFileUpload');
         }
     </script>
-@endpush
+@endsection

@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\LoginController;
 // Admin
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\FileEditorsController;
 use App\Http\Controllers\Lookups\UserLookup;
 use App\Http\Controllers\MediaController;
 
@@ -76,6 +77,9 @@ Route::middleware(['auth', 'check.user.active'])->group(function () {
             ->name('content');
         Route::get('{userFileId}/content/{fileName?}/download', [MediaController::class, 'downloadByUserFileId'])
             ->name('download');
+
+        Route::get('{userFileId}/editor/pdf', [FileEditorsController::class, 'pdf'])
+            ->name('editor.pdf');
     });
 
     /*
