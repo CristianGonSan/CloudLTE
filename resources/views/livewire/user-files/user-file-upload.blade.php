@@ -16,6 +16,10 @@
                 </div>
 
                 <div class="modal-body">
+                    <x-livewire.file-upload name="file">
+                        {{ $file?->getClientOriginalName() ?? 'Seleccionar archivo' }}
+                    </x-livewire.file-upload>
+
                     @if ($file)
                         @php
                             /**
@@ -46,14 +50,10 @@
                                 </div>
                             </div>
                         </div>
+                        <x-adminlte-textarea name="notes" fgroup-class="mb-0" placeholder="descripción..."
+                            wire:model='description' maxlength="255" />
                     @endif
 
-                    <x-livewire.file-upload name="file">
-                        {{ $file?->getClientOriginalName() ?? 'Seleccionar archivo' }}
-                    </x-livewire.file-upload>
-
-                    <x-adminlte-textarea name="notes" fgroup-class="mb-0" placeholder="notas..." wire:model='notes'
-                        maxlength="500" />
                 </div>
 
                 <div class="modal-footer">

@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->foreignId('user_id')->constrained('users')->restrictOnDelete();
 
-            $table->text('notes')->nullable();
+            $table->text('description')->nullable();
 
             $table->timestamps();
         });

@@ -265,8 +265,8 @@ enum FileExtensionSupport: string
     public function editor(): ?string
     {
         return match ($this) {
-            self::Pdf => 'pdf',
-            default => null
+            self::Pdf   => 'pdf',
+            default     => null
         };
     }
 
@@ -274,6 +274,21 @@ enum FileExtensionSupport: string
     {
         return $this->editor() !== null;
     }
+
+    public function signatureRequest(): ?string
+    {
+        return match ($this) {
+            self::Pdf   => 'pdf',
+            default     => null,
+        };
+    }
+
+    public function isSignatureRequest(): bool
+    {
+        return $this->signatureRequest() !== null;
+    }
+
+
 
     public static function fromExtension(string $extension): self
     {

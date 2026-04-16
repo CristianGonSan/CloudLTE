@@ -18,6 +18,8 @@
                         $viewer = $extension->viewer();
                         $fileUrl = $userFile->getUrl();
                         $user = $userFile->user;
+
+                        $signatureRequest = $userFile->getLastSignatureRequest();
                     @endphp
 
                     <div class="modal-header align-items-center">
@@ -37,38 +39,13 @@
 
                     <div class="modal-body p-0">
                         <div class="row no-gutters">
-                            <div class="col-md-8 bg-dark d-flex align-items-center justify-content-center"
-                                style="min-height: 512px;">
-                                @if ($extension->isViewerSupported())
-                                    @if ($viewer === 'image')
-                                        <img src="{{ $fileUrl }}" alt="{{ $media->file_name }}"
-                                            style="width: 100%; height: 562px; object-fit: contain;">
-                                    @elseif ($viewer === 'video')
-                                        <video controls class="w-100" style="max-height: 562px;">
-                                            <source src="{{ $fileUrl }}" type="{{ $media->mime_type }}">
-                                        </video>
-                                    @elseif ($viewer === 'audio')
-                                        <audio controls class="w-100 px-4">
-                                            <source src="{{ $fileUrl }}" type="{{ $media->mime_type }}">
-                                        </audio>
-                                    @else
-                                        {{-- pdf, text --}}
-                                        <iframe id="viewer-frame" src="{{ $fileUrl }}" class="w-100 border-0"
-                                            style="height: 562px;" allowfullscreen>
-                                        </iframe>
-                                    @endif
-                                @else
-                                    <div class="text-center text-white-50 p-4">
-                                        <i class="fas {{ $extension->icon() }} fa-5x mb-3"
-                                            style="color: {{ $extension->color() }}"></i>
-                                        <p class="h6">Previsualización no disponible</p>
-                                    </div>
-                                @endif
+                            <div class="col-md-8">
+                                @include('partials.files.viewer')
                             </div>
 
                             <div class="col-md-4 d-flex flex-column border-left">
                                 <div class="flex-grow-1 p-3">
-                                    <div class="d-flex align-items-start mb-4">
+                                    <div class="d-flex align-items-start mb-3">
                                         <div class="bg-light rounded d-flex align-items-center justify-content-center mr-3"
                                             style="width: 36px; height: 36px;">
                                             <i class="fas fa-user text-muted"></i>
@@ -79,12 +56,12 @@
                                                 {{ $user->name }}
                                             </div>
                                             <small class="text-muted">
-                                                Subido hace {{ $media->created_at->diffForHumans(null, true) }}
+                                                Subido hace {{ $userFile->created_at->diffForHumans(null, true) }}
                                             </small>
                                         </div>
                                     </div>
 
-                                    <div class="d-flex align-items-start mb-4">
+                                    <div class="d-flex align-items-start mb-3">
                                         <div class="bg-light rounded d-flex align-items-center justify-content-center mr-3"
                                             style="width: 36px; height: 36px;">
                                             <i class="fas fa-info-circle text-muted"></i>
@@ -99,7 +76,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="d-flex align-items-start mb-4">
+                                    <div class="d-flex align-items-start mb-3">
                                         <div class="bg-light rounded d-flex align-items-center justify-content-center mr-3"
                                             style="width: 36px; height: 36px;">
                                             <i class="fas fa-code-branch text-muted"></i>
@@ -117,6 +94,28 @@
                                             </small>
                                         </div>
                                     </div>
+                                    @if ($userFile->description)
+                                        <div class="mb-3">
+                                            <small
+                                                class="text-muted text-uppercase font-weight-bold">Descripción</small>
+                                            <p class="small mb-0 mt-1">{{ $userFile->description }}</p>
+                                        </div>
+                                    @endif
+
+                                    @if ($signatureRequest)
+                                        <a href="{{ route('files.signatures.show', [$userFile->id, $signatureRequest->id]) }}"
+                                            target="_blank"
+                                            class="d-flex align-items-center border rounded p-2 text-decoration-none text-dark">
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <small class="text-muted d-block">Última solicitud de firma</small>
+                                                <span
+                                                    class="font-weight-bold">{{ $signatureRequest->status->label() }}</span>
+                                            </div>
+                                            <small class="text-muted ml-2 text-nowrap">
+                                                {{ $signatureRequest->created_at->diffForHumans() }}
+                                            </small>
+                                        </a>
+                                    @endif
                                 </div>
 
                                 <div class="p-3 border-top">
@@ -129,32 +128,41 @@
 
                                         <div class="btn-group btn-group-sm">
                                             <a href="{{ $userFile->getUrl(true) }}" class="btn btn-outline-primary">
-                                                <i class="fas fa-download mr-1"></i> Descargar
+                                                <i class="fas fa-fw fa-download mr-1"></i> Descargar
                                             </a>
                                             <button type="button"
                                                 class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fas fa-fw fa-ellipsis-v"></i>
+                                                <i class="fas fa-fw fa-fw fa-ellipsis-v"></i>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <a class="dropdown-item" href="{{ $userFile->getUrl() }}"
                                                     target="_blank">
-                                                    <i class="fas fa-external-link-alt mr-2"></i>
+                                                    <i class="fas fa-fw fa-external-link-alt mr-2"></i>
                                                     Abrir en otra ventana
                                                 </a>
-                                                @if ($extension->editor() === 'pdf')
+                                                @can('editFile', $userFile)
+                                                    @if ($extension->editor() === 'pdf')
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('files.editor.pdf', $userFile->id) }}">
+                                                            <i class="fas fa-fw fa-edit mr-2"></i>
+                                                            Editar PDF
+                                                        </a>
+                                                    @endif
+                                                @endcan
+                                                @can('createSignatureRequest', $userFile)
                                                     <a class="dropdown-item"
-                                                        href="{{ route('files.editor.pdf', $userFile->id) }}">
-                                                        <i class="fas fa-edit mr-2"></i>
-                                                        Editar PDF
+                                                        href="{{ route('files.signatures.create', $userFile->id) }}">
+                                                        <i class="fas fa-fw fa-file-contract mr-2"></i>
+                                                        Solicitar firmas
                                                     </a>
-                                                @endif
+                                                @endcan
                                                 @can('delete', $userFile)
                                                     <div class="dropdown-divider"></div>
                                                     <button class="dropdown-item text-danger"
                                                         wire:click="delete({{ $userFile->id }})"
                                                         wire:swal-confirm="¿Eliminar archivo?">
-                                                        <i class="fas fa-trash-alt mr-2"></i>
+                                                        <i class="fas fa-fw fa-trash-alt mr-2"></i>
                                                         Eliminar
                                                     </button>
                                                 @endcan
@@ -185,6 +193,14 @@
 
         Livewire.on('hideModalUserFileShow', function() {
             $('#modalUserFileShow').modal('hide');
+        });
+
+        $('#modalUserFileShow').on('hidden.bs.modal', function() {
+            const url = new URL(window.location.href);
+
+            url.searchParams.delete('show_file');
+
+            window.history.replaceState({}, document.title, url.toString());
         });
     </script>
 @endpush

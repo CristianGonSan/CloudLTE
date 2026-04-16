@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Account;
+namespace App\Livewire\Auth\Account;
 
 use App\Traits\SweetAlert2\Livewire\Toast;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +18,7 @@ class ChangePassword extends Component
 
     public function render(): View
     {
-        return view('livewire.account.change-password');
+        return view('livewire.auth.account.change-password');
     }
 
     public function update(): void

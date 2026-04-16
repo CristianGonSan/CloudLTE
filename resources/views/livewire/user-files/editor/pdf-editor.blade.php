@@ -1,6 +1,6 @@
 <div x-data="pdfViewer()">
     <div class="row">
-        <div class="col-md-9 col-sm-8" wire:ignore>
+        <div class="col-md-9" wire:ignore>
             <div class="card">
                 <div class="card-header py-2 d-flex align-items-center justify-content-between flex-wrap gap-2">
                     <div class="d-flex align-items-center">
@@ -215,11 +215,15 @@
                 </div>
 
                 <div class="card-footer">
-                    <button class="btn btn-outline-success btn-sm btn-block" x-on:click="savePDF()"
+                    <button class="btn btn-outline-success btn-sm btn-block mb-2" x-on:click="savePDF()"
                         :disabled="objectCount == 0 || saving">
-                        <span x-show="!saving"><i class="fas fa-download mr-1"></i> Guardar PDF</span>
+                        <span x-show="!saving"><i class="fas fa-upload mr-1"></i> Guardar PDF</span>
                         <span x-show="saving"><i class="fas fa-spinner fa-spin mr-1"></i> Generando...</span>
                     </button>
+                    <a class="btn btn-outline-secondary btn-sm btn-block"
+                        href="{{ route('files.show', $userFile->id) }}">
+                        Cancelar
+                    </a>
                 </div>
             </div>
         </div>
@@ -229,6 +233,23 @@
 @push('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+
+    <script>
+        window.pdfProcessState = {
+            isBusy: false,
+            objectCount: 0
+        };
+
+        window.addEventListener("beforeunload", function(event) {
+            const pdfProcessState = window.pdfProcessState;
+            if (pdfProcessState) {
+                if (pdfProcessState.isBusy) {
+                    event.preventDefault();
+                    event.returnValue = "";
+                }
+            }
+        });
+    </script>
 
     <script type="module">
         import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs';
@@ -304,30 +325,9 @@
             return m ? parseFloat(m[1]) : 1;
         }
 
-        /**
-         * Resolución de renderizado del overlay.
-         * A escala 1 pdfjs produce ~72 dpi. Con OVERLAY_SCALE = 4 obtenemos ~288 dpi,
-         * suficiente para texto nítido en cualquier impresora o pantalla retina.
-         * Subir más de 4 aumenta mucho el tamaño del archivo sin ganancia visible.
-         */
+
         const OVERLAY_SCALE = 2;
 
-        /**
-         * Renderiza los objetos Fabric de una página sobre un canvas offscreen
-         * a alta resolución y devuelve un PNG como Uint8Array.
-         *
-         * Estrategia:
-         *   - Se obtiene el viewport de pdfjs a OVERLAY_SCALE para conocer
-         *     el tamaño en píxeles del canvas offscreen.
-         *   - Se aplica el mismo zoom a Fabric para que las coordenadas guardadas
-         *     (que están en espacio de escala 1) se escalen proporcionalmente.
-         *   - pdf-lib incrusta el PNG y lo comprime al tamaño en puntos de la página,
-         *     conservando toda la resolución extra como densidad de píxeles.
-         *
-         * @param {number}   pageNum - Número de página (1-based)
-         * @param {object[]} objects - Array de objetos serializados de Fabric
-         * @returns {Promise<Uint8Array>}
-         */
         async function renderOverlayForPage(pageNum, objects) {
             // 1. Viewport a alta resolución para fijar el tamaño del canvas offscreen
             const pdfJsPage = await _pdf.getPage(pageNum);
@@ -568,6 +568,7 @@
             deleteAll() {
                 if (!_fabricCanvas) return;
                 _fabricCanvas.clear();
+                _pageObjects.clear();
                 this.objectCount = 0;
                 this.hasSelection = false;
             },
@@ -584,6 +585,7 @@
                 if (!pagesWithObjects.length) return;
 
                 this.saving = true;
+                window.pdfProcessState.isBusy = true;
                 try {
                     const originalBytes = await fetch(FILE_URL).then(r => r.arrayBuffer());
 
@@ -621,7 +623,12 @@
                     this.$wire.upload(
                         'file', // propiedad pública en el componente
                         file,
-                        () => this.$wire.call('save'), // éxito: llama al método save()
+                        () => {
+                            // éxito: llama al método save()
+                            this.$wire.call('save')
+                            this.saving = false;
+                            window.pdfProcessState.isBusy = false;
+                        },
                         (err) => {
                             console.error('Error al subir el archivo:', err);
                             alert('No se pudo subir el archivo al servidor.');
@@ -636,6 +643,7 @@
                     console.error('Error al generar el PDF:', err);
                     alert('Ocurrió un error al generar el PDF. Revisa la consola para más detalles.');
                     this.saving = false; // solo se resetea aquí; en el camino feliz lo hace save()
+                    window.pdfProcessState.isBusy = false;
                 }
             },
         });

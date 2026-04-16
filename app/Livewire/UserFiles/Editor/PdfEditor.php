@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Livewire\Files;
+namespace App\Livewire\UserFiles\Editor;
 
 use App\Models\UserFile;
 use App\Traits\SweetAlert2\FlashToast;
+use Illuminate\View\View;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
 
-class FileEditorPdf extends Component
+class PdfEditor extends Component
 {
     use WithFileUploads, FlashToast;
 
@@ -23,9 +24,9 @@ class FileEditorPdf extends Component
         $this->userFileId = $userFileId;
     }
 
-    public function render()
+    public function render(): View
     {
-        return view('livewire.files.file-editor-pdf', [
+        return view('livewire.user-files.editor.pdf-editor', [
             'userFile' => $this->userFile(),
         ]);
     }
@@ -33,7 +34,7 @@ class FileEditorPdf extends Component
     public function save(): void
     {
         $this->validate([
-            'file' => ['required', 'file', 'mimes:pdf', 'max:51200'],
+            'file' => ['required', 'file', 'mimes:pdf', 'max:10240'],
         ]);
 
         $userFile = $this->userFile();
@@ -53,10 +54,8 @@ class FileEditorPdf extends Component
         $userFile->save();
 
         $this->flashToastSuccess('Archivo editado');
-        redirect()->route('root');
+        redirect()->route('files.show', $userFile->id);
     }
-
-    // ── Privado ───────────────────────────────────────────────────────────────
 
     private ?UserFile $fileUser = null;
 

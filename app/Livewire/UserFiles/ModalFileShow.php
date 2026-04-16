@@ -5,13 +5,22 @@ namespace App\Livewire\UserFiles;
 use App\Models\UserFile;
 use App\Traits\SweetAlert2\Livewire\Toast;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class ModalFileShow extends Component
 {
     use Toast;
 
+    #[Url(as: 'show_file')]
     public ?int $userFileId = null;
+
+    public function mount()
+    {
+        if ($this->userFileId !== null) {
+            $this->openModal($this->userFileId);
+        }
+    }
 
     public function render()
     {

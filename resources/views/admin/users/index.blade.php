@@ -6,7 +6,6 @@
     <div class="d-flex justify-content-between align-items-center">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('root') }}">Inicio</a></li>
                 <li class="breadcrumb-item active">Usuarios</li>
             </ol>
         </nav>

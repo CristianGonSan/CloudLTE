@@ -55,5 +55,6 @@ return [
 
     'configuration' => 'Configuración',
 
-    'export' => 'Exportar'
+    'export' => 'Exportar',
+    'files' => 'Archivos'
 ];

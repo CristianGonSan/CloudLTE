@@ -1,24 +1,27 @@
 <?php
 
-use App\Http\Controllers\AccountController;
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserFiles\UserFileController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserFiles\MediaController;
+use App\Http\Controllers\UserFiles\FileEditorController;
 
 // Auth
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\AccountController;
 
 // Admin
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\FileEditorsController;
-use App\Http\Controllers\Lookups\UserLookup;
-use App\Http\Controllers\MediaController;
 
-Route::redirect('', 'dashboard')
+use App\Http\Controllers\Lookups\UserLookup;
+use App\Http\Controllers\UserFiles\SignaturesController;
+
+Route::redirect('', 'files');
+
+Route::redirect('files', 'files')
     ->name('root');
-Route::redirect('home', 'dashboard')
-    ->name('home');
 
 /*
 |--------------------------------------------------------------------------
@@ -36,8 +39,8 @@ Route::get('disabled', fn() => view('auth.disabled'))->name('auth.disabled');
 Route::middleware(['auth', 'check.user.active'])->group(function () {
 
     // Core
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('my-account', [AccountController::class, 'show'])->name('my-account');
+    //Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('myaccount', [AccountController::class, 'index'])->name('myaccount');
 
     /*
     |--------------------------------------------------------------------------
@@ -63,24 +66,33 @@ Route::middleware(['auth', 'check.user.active'])->group(function () {
     });
 
     //Documents
-    Route::prefix('user-files')->name('user-files.')->group(function () {
-        Route::get('', [UserFileController::class, 'index'])->name('index');
-        Route::get('create', [UserFileController::class, 'create'])->name('create');
-        Route::get('{user}', [UserFileController::class, 'show'])->name('show');
-        Route::get('{user}/edit', [UserFileController::class, 'edit'])->name('edit');
-
-        Route::get('browser', [UserFileController::class, 'browser'])->name('browser');
-    });
 
     Route::prefix('files')->name('files.')->group(function () {
+        Route::get('', [UserFileController::class, 'index'])->name('index');
+
         Route::get('{userFileId}/content/{fileName?}', [MediaController::class, 'showByUserFileId'])
             ->name('content');
         Route::get('{userFileId}/content/{fileName?}/download', [MediaController::class, 'downloadByUserFileId'])
             ->name('download');
 
-        Route::get('{userFileId}/editor/pdf', [FileEditorsController::class, 'pdf'])
+        Route::get('{userFileId}', [UserFileController::class, 'show'])
+            ->name('show');
+
+        Route::get('{userFileId}/editor/pdf', [FileEditorController::class, 'pdf'])
             ->name('editor.pdf');
+
+        Route::get('{userFileId}/signatures/create', [SignaturesController::class, 'create'])
+            ->name('signatures.create');
+        Route::get('{userFileId}/signatures/{requestId}/edit', [SignaturesController::class, 'edit'])
+            ->name('signatures.edit');
+        Route::get('{userFileId}/signatures/{requestId}', [SignaturesController::class, 'show'])
+            ->name('signatures.show');
+
+        Route::get('{userFileId}/signatures/{requestId}/sign/{signatoryId}', [SignaturesController::class, 'sign'])
+            ->name('signatures.sign');
     });
+
+    Route::get('mysignature', [MediaController::class, 'mySignature'])->name('mysignature');
 
     /*
     |--------------------------------------------------------------------------

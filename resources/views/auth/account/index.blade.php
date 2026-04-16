@@ -36,11 +36,14 @@
                 </div>
             </div>
 
+            <h2 class="h5">Firma</h2>
+            <livewire:Auth.Account.SignatureUpload />
+
             <h2 class="h5">Cambiar contraseña</h2>
-            <livewire:Account.ChangePassword />
+            <livewire:Auth.Account.ChangePassword />
 
             <h2 class="h5">Sesiones activas</h2>
-            <livewire:Account.ShowSessions />
+            <livewire:Auth.Account.ShowSessions />
         </div>
 
         <div class="col-md-4">

@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\UserFiles;
 
+use App\Http\Controllers\Controller;
 use App\Models\UserFile;
+use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -16,6 +18,14 @@ class MediaController extends Controller
     public function download(int $mediaId): BinaryFileResponse
     {
         return $this->attachment($this->findMedia($mediaId));
+    }
+
+    public function mySignature(): BinaryFileResponse
+    {
+        $user = Auth::user();
+        $media = $user->getFirstMedia('signature');
+
+        return $this->inline($media);
     }
 
     public function showByUserFileId(int $userFileId): BinaryFileResponse

@@ -7,6 +7,7 @@ use App\Models\UserFile;
 use App\Traits\SweetAlert2\Livewire\Toast;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -45,18 +46,6 @@ class UserFilesList extends Component
         ]);
     }
 
-    public function delete(int $fileId)
-    {
-        $userFile = UserFile::findOrFail($fileId);
-
-        if ($this->authorize('delete', $userFile)) {
-            $userFile->hardDelete();
-            $this->toastSuccess("Archivo eliminado");
-        } else {
-            $this->toastError("Sin autorización");
-        }
-    }
-
     public function updated(): void
     {
         $this->resetPage();
@@ -74,7 +63,7 @@ class UserFilesList extends Component
             ->select('user_files.*');
 
         if ($this->onlyMyFiles) {
-            $query->where('user_files.user_id', auth()->id());
+            $query->where('user_files.user_id', Auth::id());
         }
 
         if ($mimeArray = $this->resolveMime()) {

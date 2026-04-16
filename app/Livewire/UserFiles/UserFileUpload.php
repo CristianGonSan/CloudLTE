@@ -4,16 +4,15 @@ namespace App\Livewire\UserFiles;
 
 use App\Rules\FileSupport;
 use Exception;
-use App\Enums\FileExtensionSupport;
 use App\Models\UserFile;
 use App\Traits\SweetAlert2\Livewire\Toast;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
-use Illuminate\Validation\Rules\File;
 
 class UserFileUpload extends Component
 {
@@ -21,14 +20,14 @@ class UserFileUpload extends Component
 
     public ?TemporaryUploadedFile $file = null;
 
-    public string $notes = '';
+    public string $description = '';
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.user-files.user-file-upload');
     }
 
-    public function updatedFile()
+    public function updatedFile(): void
     {
         $this->validateOnly('file');
     }
@@ -53,8 +52,8 @@ class UserFileUpload extends Component
         try {
             DB::transaction(function () use ($validated) {
                 $document = UserFile::create([
-                    'user_id' => Auth::id(),
-                    'notes'   => $validated['notes']
+                    'user_id'       => Auth::id(),
+                    'description'   => $validated['description']
                 ]);
 
                 $file = $this->file;
@@ -77,15 +76,15 @@ class UserFileUpload extends Component
 
     private function resetForm(): void
     {
-        $this->reset(['file', 'notes']);
+        $this->reset(['file', 'description']);
         $this->resetValidation();
     }
 
     public function rules(): array
     {
         return [
-            'file'  => ['required', 'file', 'max:10240', new FileSupport()],
-            'notes' => ['nullable', 'string', 'max:500'],
+            'file'          => ['required', 'file', 'max:10240', new FileSupport()],
+            'description'   => ['nullable', 'string', 'max:255'],
         ];
     }
 }

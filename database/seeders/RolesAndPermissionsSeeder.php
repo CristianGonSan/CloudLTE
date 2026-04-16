@@ -25,57 +25,6 @@ final class RolesAndPermissionsSeeder extends Seeder
             'roles.create',
             'roles.edit',
             'roles.delete',
-
-            'categories.view',
-            'categories.create',
-            'categories.edit',
-            'categories.delete',
-            'categories.toggle',
-
-            'raw-materials.view',
-            'raw-materials.create',
-            'raw-materials.edit',
-            'raw-materials.delete',
-            'raw-materials.toggle',
-
-            'units.view',
-            'units.create',
-            'units.edit',
-            'units.delete',
-            'units.toggle',
-
-            'warehouses.view',
-            'warehouses.create',
-            'warehouses.edit',
-            'warehouses.delete',
-            'warehouses.toggle',
-
-            'suppliers.view',
-            'suppliers.create',
-            'suppliers.edit',
-            'suppliers.delete',
-            'suppliers.toggle',
-
-            'responsibles.view',
-            'responsibles.create',
-            'responsibles.edit',
-            'responsibles.delete',
-            'responsibles.toggle',
-
-            'raw-material-documents.view',
-            'raw-material-documents.create',
-            'raw-material-documents.edit',
-            'raw-material-documents.delete',
-            'raw-material-documents.accept',
-            'raw-material-documents.reject',
-            'raw-material-documents.cancel',
-
-            'raw-material-batches.view',
-            'raw-material-movements.view',
-            'raw-material-stocks.view',
-
-            'dashboard.view',
-            'reports.export',
         ];
 
         foreach ($permissions as $name) {

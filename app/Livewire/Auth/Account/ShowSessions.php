@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Account;
+namespace App\Livewire\Auth\Account;
 
 use App\Traits\SweetAlert2\Livewire\Toast;
 use Illuminate\Support\Carbon;
@@ -21,7 +21,7 @@ class ShowSessions extends Component
 
     public function render(): View
     {
-        return view('livewire.account.show-sessions', [
+        return view('livewire.auth.account.show-sessions', [
             'sessions' => $this->getSessions()
         ]);
     }

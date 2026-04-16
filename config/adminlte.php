@@ -194,8 +194,8 @@ return [
     'classes_brand'             => '',
     'classes_brand_text'        => '',
     'classes_content_wrapper'   => '',
-    'classes_content_header'    => '',
-    'classes_content'           => '',
+    'classes_content_header'    => 'container',
+    'classes_content'           => 'container',
     'classes_sidebar'           => 'sidebar-dark-primary elevation-1',
     'classes_sidebar_nav'       => '',
     'classes_topnav'            => 'navbar-dark navbar-dark-dark',
@@ -313,14 +313,14 @@ return [
         ],
 
         [
-            'text' => 'dashboard',
-            'route' => 'dashboard',
-            'icon' => 'fas fa-fw fa-chart-line',
+            'text' => 'files',
+            'route' => 'files.index',
+            'icon' => 'fas fa-fw fa-file-alt',
         ],
         ['header' => 'ADMINISTRATION'],
         [
             'text' => 'my_account',
-            'route' => 'my-account',
+            'route' => 'myaccount',
             'icon' => 'fas fa-fw fa-gear',
         ],
         [

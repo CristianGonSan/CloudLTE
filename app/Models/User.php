@@ -13,6 +13,8 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Str;
 
 /**
  * @property int $id
@@ -26,7 +28,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserFile> $files
  * @property-read int|null $files_count
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \Spatie\MediaLibrary\MediaCollections\Models\Media> $media
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, Media> $media
  * @property-read int|null $media_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
  * @property-read int|null $permissions_count
@@ -78,6 +80,22 @@ class User extends Authenticatable implements HasMedia
     public function isInUse(): bool
     {
         return $this->files()->exists();
+    }
+
+    public function getSignature(): ?Media
+    {
+        return $this->getFirstMedia('signature');
+    }
+
+    public function getSignatureUrl(): string
+    {
+        return route('mysignature');
+    }
+
+    public function getSignatureUrlRamdon(): string
+    {
+        $random = Str::random(6);
+        return route('mysignature') . "?r=$random";
     }
 
     public function files(): HasMany

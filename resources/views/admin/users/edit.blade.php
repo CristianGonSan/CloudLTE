@@ -7,7 +7,6 @@
 @section('content_header')
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('root') }}">Inicio</a></li>
             <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Usuarios</a></li>
             <li class="breadcrumb-item"><a href="{{ route('admin.users.show', $userId) }}">#{{ $userId }}</a></li>
             <li class="breadcrumb-item active">Editar</li>
