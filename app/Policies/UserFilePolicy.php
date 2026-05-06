@@ -2,8 +2,6 @@
 
 namespace App\Policies;
 
-use App\Enums\FileExtensionSupport;
-use App\Enums\SignatureRequestStatus;
 use App\Models\User;
 use App\Models\UserFile;
 use Illuminate\Auth\Access\Response;
@@ -34,6 +32,6 @@ class UserFilePolicy
                 $lastRequest === null ||
                 !$lastRequest->isPending()
             ) &&
-            $userFile->getFileExtensionSupport()->isSignatureRequest();
+            $userFile->getFileExtensionSupport()->isSignatureRequestSupported();
     }
 }

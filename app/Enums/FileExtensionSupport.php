@@ -283,12 +283,10 @@ enum FileExtensionSupport: string
         };
     }
 
-    public function isSignatureRequest(): bool
+    public function isSignatureRequestSupported(): bool
     {
         return $this->signatureRequest() !== null;
     }
-
-
 
     public static function fromExtension(string $extension): self
     {

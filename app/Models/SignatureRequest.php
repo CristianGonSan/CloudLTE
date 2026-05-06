@@ -66,7 +66,7 @@ class SignatureRequest extends Model
 
     public function canSign(User $user): bool
     {
-        return $this->getSignatoryByUser($user)?->isPending();
+        return $this->getSignatoryByUser($user)?->isPending() && $user->getSignature() !== null;
     }
 
     public function isPending(): bool
